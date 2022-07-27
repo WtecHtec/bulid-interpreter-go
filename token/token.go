@@ -16,8 +16,16 @@ const (
 	INT   = "INT"   // 1343456
 
 	// 操作符
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
+	EQ       = "=="
+	NOT_EQ   = "!="
+	LT       = "<"
+	GT       = ">"
 
 	// 分隔符
 	COMMA     = ","
@@ -30,13 +38,24 @@ const (
 	// 关键字
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
 
 var Keywords = map[string]TokenType{
-	"fn":  FUNCTION,
-	"let": LET,
+	"fn":     FUNCTION,
+	"let":    LET,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
+	"return": RETURN,
 }
 
+/*判断当前字符是否是关键词*/
 func LookupIdent(ident string) TokenType {
 	if tok, ok := Keywords[ident]; ok {
 		return tok
