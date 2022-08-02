@@ -19,6 +19,6 @@ func main() {
 
 	// l.ch = 'c'
 	n.ch = '6'
-	fmt.Print(*l)
+	fmt.Print(l)
 	fmt.Print(n)
 }
