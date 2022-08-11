@@ -231,3 +231,33 @@ func TestParams(t *testing.T) {
 	value := 5
 	param(value, t)
 }
+
+type Animia interface {
+	say()
+}
+
+type Dog struct {
+	name string
+}
+
+func (d *Dog) say() {
+	fmt.Println(d.name)
+}
+
+func (d *Dog) run() {
+	fmt.Println(d.name, "running")
+}
+
+type Cat struct {
+	name string
+}
+
+func TestInterface(t *testing.T) {
+	var d Animia
+	dog := &Dog{name: "狗子"}
+	d = dog
+	d.say()
+	dog.run()
+	td, ok := d.(*Dog)
+	fmt.Println(td.name, ok)
+}
