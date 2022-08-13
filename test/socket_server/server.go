@@ -21,7 +21,7 @@ func process(conn net.Conn) {
 		conn.Write([]byte("server"))
 	}
 }
-func main() {
+func TCPServer() {
 	listen, err := net.Listen("tcp", "127.0.0.1:4004")
 	if err != nil {
 		fmt.Println(err)
@@ -38,4 +38,35 @@ func main() {
 		fmt.Println("连接ing....")
 		go process(conn) // 启动一个goroutine处理连接
 	}
+}
+
+func UDPServer() {
+	fmt.Println("服务启动ing")
+	listen, err := net.ListenUDP("udp", &net.UDPAddr{
+		IP:   net.IPv4(0, 0, 0, 0),
+		Port: 4004,
+	})
+	if err != nil {
+		fmt.Println("服务启动失败")
+		return
+	}
+	defer listen.Close()
+	for {
+		var data [1024]byte
+		n, addr, err := listen.ReadFromUDP(data[:])
+		if err != nil {
+			fmt.Println("接收数据失败")
+			continue
+		}
+		fmt.Println("接收数据", string(data[n:]))
+		_, err = listen.WriteToUDP([]byte("udp server"), addr)
+		if err != nil {
+			fmt.Println("服务发送数据失败")
+			continue
+		}
+	}
+}
+
+func main() {
+	UDPServer()
 }

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func main() {
+func TCPClient() {
 	conn, err := net.Dial("tcp", "127.0.0.1:4004")
 	if err != nil {
 		fmt.Println("连接失败")
@@ -35,4 +35,33 @@ func main() {
 		}
 		fmt.Println("服务器：", string(buf[:n]))
 	}
+}
+
+func UDPClient() {
+	socket, err := net.DialUDP("udp", nil, &net.UDPAddr{
+		IP:   net.IPv4(0, 0, 0, 0),
+		Port: 4004,
+	})
+	if err != nil {
+		fmt.Println("连接服务失败")
+		return
+	}
+	defer socket.Close()
+	sendData := []byte("你好 udp")
+	_, err = socket.Write(sendData)
+	if err != nil {
+		fmt.Println("发送数据失败")
+		return
+	}
+	data := make([]byte, 4096)
+	n, addr, err := socket.ReadFromUDP(data)
+	if err != nil {
+		fmt.Println("接收数据失败")
+		return
+	}
+	fmt.Println("接收数据", string(data[n:]), addr)
+
+}
+func main() {
+	UDPClient()
 }
