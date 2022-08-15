@@ -54,6 +54,7 @@ func (c *connection) reader() {
 			break
 		}
 		json.Unmarshal(message, &c.data)
+		fmt.Println(c.data)
 		switch c.data.Type {
 		case "login":
 			c.data.User = c.data.Content
