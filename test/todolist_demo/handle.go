@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -51,6 +52,7 @@ func (h *Handle) updateJson() bool {
 	todoValue := string(jsons)
 	err := ioutil.WriteFile("data.json", []byte(todoValue), 0755)
 	if err != nil {
+		log.Println("读取数据失败")
 		fmt.Println("WriteFile failed")
 		return false
 	}
@@ -74,15 +76,18 @@ func (h *Handle) modify(task *Task, tasks []Task, opt string) []Task {
 		}
 	}
 	if opt == "del" {
+		log.Println("删除一条记录", task.Id)
 		tasks = append(tasks[:index], tasks[index+1:]...)
 	}
 
 	if opt == "update" {
 		tasks[index] = *task
+		log.Println("更新一条记录", task.Id, "-----", *task)
 	}
 
 	if opt == "add" {
 		tasks = append(tasks, *task)
+		log.Println("添加一条记录", task.Id, "-----", *task)
 	}
 	h.List = tasks
 	return tasks

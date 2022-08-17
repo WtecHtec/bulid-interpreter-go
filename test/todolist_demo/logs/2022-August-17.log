@@ -1,0 +1,8 @@
+2022/08/17 16:26:28.493390 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/server.go:134: 127.0.0.1:8900服务启动
+2022/08/17 17:11:09.557062 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/server.go:134: 127.0.0.1:8900服务启动
+2022/08/17 17:11:36.645576 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/handle.go:85: 更新一条记录 1660642275 ----- {1660642275 1 做什么222 2022-08-18}
+2022/08/17 17:11:48.485753 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/handle.go:85: 更新一条记录 1660642275 ----- {1660642275 1 做什么7777 2022-08-18}
+2022/08/17 17:11:58.573017 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/handle.go:85: 更新一条记录 1660642302 ----- {1660642302 1 做什么啊大大 2022-08-26}
+2022/08/17 17:12:10.487615 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/handle.go:79: 删除一条记录 1660642302
+2022/08/17 17:12:21.967609 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/handle.go:90: 添加一条记录 1660727541 ----- {1660727541 0 做什么啊大大 2022-09-02}
+2022/08/17 17:12:43.512216 D:/Wtechtec/bulid-interpreter-go/test/todolist_demo/server.go:134: 127.0.0.1:8900服务启动

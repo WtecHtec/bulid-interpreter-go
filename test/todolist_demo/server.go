@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"text/template"
 	"time"
@@ -107,8 +109,29 @@ func editTask(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/", http.StatusFound)
 }
+func GetLogToDay() string {
+	now := time.Now() //获取当前时间
+	fmt.Printf("current time:%v\n", now)
+
+	year := now.Year()   //年
+	month := now.Month() //月
+	day := now.Day()     //日
+	return fmt.Sprintf("%v-%v-%v", year, month, day)
+}
+func init() {
+
+	logTime := GetLogToDay()
+	fmt.Println("init")
+	logFile, err := os.OpenFile("./logs/"+logTime+".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err != nil {
+		fmt.Println("open log file failed, err:", err)
+		return
+	}
+	log.SetOutput(logFile)
+	log.SetFlags(log.Llongfile | log.Lmicroseconds | log.Ldate)
+}
 func main() {
-	fmt.Println("127.0.0.1:8900服务启动")
+	log.Println("127.0.0.1:8900服务启动")
 	handle = Handle{}
 	http.HandleFunc("/", pageViews)
 	http.HandleFunc("/finish", finishTask)
@@ -116,7 +139,7 @@ func main() {
 	http.HandleFunc("/edit", editTask)
 	err := http.ListenAndServe(":8900", nil)
 	if err != nil {
-		fmt.Println("HTTP server failed,err:", err)
+		log.Println("HTTP server failed,err:", err)
 		return
 	}
 
