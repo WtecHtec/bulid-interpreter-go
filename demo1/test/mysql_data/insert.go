@@ -23,7 +23,7 @@ type Place struct {
 var Db *sqlx.DB
 
 func init() {
-	database, err := sqlx.Open("mysql", "root:root@tcp(127.0.0.1:3306)/test")
+	database, err := sqlx.Open("mysql", "root:123456@tcp(9.134.163.223:3306)/testdb")
 	if err != nil {
 		fmt.Println("open mysql failed,", err)
 		return
