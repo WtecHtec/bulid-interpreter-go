@@ -1,9 +1,12 @@
 package ast
 
-import "monkey/token"
+import (
+	"bytes"
+)
 
 type Node interface {
 	TokenLiteral() string
+	String() string
 }
 
 type Statement interface {
@@ -29,19 +32,10 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
-type Identifier struct {
-	Token token.Token // IDENT token 标记
-	Value string
+func (p *Program) String() string {
+	var out bytes.Buffer
+	for _, s := range p.Statements {
+		out.WriteString(s.String())
+	}
+	return out.String()
 }
-
-func (i *Identifier) expressionNode()      {}
-func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
-
-type LetStatement struct {
-	Token token.Token // let token 标记
-	Name  *Identifier
-	Value Expression
-}
-
-func (ls *LetStatement) statementNode()       {}
-func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }

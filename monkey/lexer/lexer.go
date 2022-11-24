@@ -137,7 +137,7 @@ func (l *Lexer) skipWhitespace() {
 	}
 }
 
-// 初始化词法分析器
+// 词法分析器
 func New(input string) *Lexer {
 	l := &Lexer{input: input}
 	// 将扫描的字符初始化为0
