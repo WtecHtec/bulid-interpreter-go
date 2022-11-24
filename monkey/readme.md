@@ -209,6 +209,7 @@ type FunctionLiteral struct {
 
 ```
 #### 调用表达式
+
 <expression>(<comma separated expressions>)
 抽象ast:
 ```
@@ -226,6 +227,7 @@ add(1 + 2)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 
 ```
+
 ```
 
 func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
@@ -235,12 +237,25 @@ func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
 }
 
 ```
-##### 解析器的概念是不会留下可执行文件的东西(与编译器相反，编译器可以留下可执行文件)在查看时变得非常模糊在现实世界和高度优化的编程语言实现中。
-
-#### 评估表达式eval 自上而下递归
-
-```
-func Eval(node ast.Node) object.Object
+#### 表达式eval 自上而下递归
+解析器的概念是不会留下可执行文件的东西(与编译器相反，编译器可以留下可执行文件)在查看时变得非常模糊在现实世界和高度优化的编程语言实现中。
 
 ```
+func Eval(node ast.Node) object.Object {
+		//  node.(type) 获取节点类型
+	switch node := node.(type) {
+	case *ast.Program:
+		return evalProgram(node)
+
+	case *ast.IntegerLiteral:
+		return &object.Integer{Value: node.Value}
+
+	case *ast.ExpressionStatement:
+		return Eval(node.Expression)
+
+		...
+}
+
+```
+从根节点开始遍历，根据每个token节点类型执行不同的操作。当遇到表达式，执行递归。
 
