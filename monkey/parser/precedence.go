@@ -11,6 +11,7 @@ const (
 	PRODUCT         // *
 	PREFIX          // -X or !X
 	CALL            // myFunction(X)
+	INDEX           // array[index]
 )
 
 // 运算符 优先级
@@ -24,6 +25,7 @@ var precedences = map[token.TokenType]int{
 	token.SLASH:    PRODUCT,
 	token.ASTERISK: PRODUCT,
 	token.LPAREN:   CALL,
+	token.LBRACKET: INDEX,
 }
 
 // 获取下一个token 运算符优先级

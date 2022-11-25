@@ -11,8 +11,9 @@ const (
 	EOF     = "EOF"     // 结束
 
 	// 标识符（变量、函数名等） 定义符（数值、字符串、日期等）
-	IDENT = "IDENT" // add, foobar, x, y,...
-	INT   = "INT"   // 1343456
+	IDENT  = "IDENT" // add, foobar, x, y,...
+	INT    = "INT"   // 1343456
+	STRING = "STRING"
 
 	// 操作符
 	ASSIGN   = "="
@@ -35,6 +36,10 @@ const (
 	RPAREN    = ")"
 	LBRACE    = "{"
 	RBRACE    = "}"
+	COLON     = ":"
+
+	LBRACKET = "["
+	RBRACKET = "]"
 
 	// 关键字
 	FUNCTION = "FUNCTION"

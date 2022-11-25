@@ -229,7 +229,6 @@ add(1 + 2)
 ```
 
 ```
-
 func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
 	exp := &ast.CallExpression{Token: p.curToken, Function: function}
 	exp.Arguments = p.parseCallArguments()
@@ -237,7 +236,18 @@ func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
 }
 
 ```
+
+#### 解析 哈希
+{<expression> : <expression>, <expression> : <expression>, ... }
+
+#### 解析字符串
+"<sequence of characters>"
+
+#### 解析数组
+<expression>[<expression>]
+
 #### 表达式eval 自上而下递归
+
 解析器的概念是不会留下可执行文件的东西(与编译器相反，编译器可以留下可执行文件)在查看时变得非常模糊在现实世界和高度优化的编程语言实现中。
 
 ```
@@ -259,3 +269,25 @@ func Eval(node ast.Node) object.Object {
 ```
 从根节点开始遍历，根据每个token节点类型执行不同的操作。当遇到表达式，执行递归。
 
+#### 运行环境
+定一个全局的map 用于运行环境，声明一个变量时，在这个map中加入这个变量，以及值，
+当扫描遇到这个变量时，先去map查找一下是否有这个变量
+```
+type Environment struct {
+	store map[string]Object
+}
+
+func (e *Environment) Get(name string) (Object, bool) {
+	obj, ok := e.store[name]
+	return obj, ok
+}
+
+func (e *Environment) Set(name string, val Object) Object {
+	e.store[name] = val
+	return val
+}
+
+```
+
+#### 垃圾收集器
+基本的“标记和清除”算法
