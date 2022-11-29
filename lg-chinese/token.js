@@ -7,11 +7,16 @@ const TOKEN_TYPE = {
 	STRING : "STRING",
 
   PRINT: 'PRINT',
-
+  FUNCTION: 'FUNCTION',
   LET: 'LET',
    
   ASSIGN: "=",
   ASTERISK : "*",
+
+  LPAREN  :  "(",
+	RPAREN   : ")",
+	LBRACE  :  "{",
+	RBRACE   : "}",
 
 
   COMMA: ",",

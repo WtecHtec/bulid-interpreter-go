@@ -1,4 +1,4 @@
-const { AST_LET, Identifier, NumericLiteral, AST_IN_OPT, AST_PRT } = require("./ast")
+const { AST_LET, Identifier, NumericLiteral, AST_IN_OPT, AST_PRT, AST_FN } = require("./ast")
 const { TOKEN_TYPE } = require("./token")
 
 class Paser {
@@ -10,6 +10,8 @@ class Paser {
     this.prefixParseFns = {
       [TOKEN_TYPE.IDENT]: Identifier,
       [TOKEN_TYPE.INT]: NumericLiteral,
+      [TOKEN_TYPE.FUNCTION]: this.parseFuncAst.bind(this),
+      [TOKEN_TYPE.LPAREN]: this.parseLpAst.bind(this),
     }
 
     this.infixParseFns = {
@@ -106,6 +108,53 @@ class Paser {
       this.pushError('缺少;')
     }
     return AST_PRT(values)
+  }
+  // fn (p) {ex}
+  parseFuncAst() {
+    const fnAst = AST_FN()
+    this.nextToken()
+    if (this.curToken.type !== TOKEN_TYPE.LPAREN) {
+      this.pushError('方程 缺 (')
+    }
+   
+    fnAst.params = this.parsePramaAst(this.curToken)
+
+    if (this.curToken.type !== TOKEN_TYPE.LBRACE) {
+      this.pushError('方程 缺 {')
+    }
+    fnAst.body = this.parseBodyAst()
+    return fnAst;
+  }
+
+  parsePramaAst() {
+    const res = []
+    this.nextToken()
+    while(this.peekToken.type === TOKEN_TYPE.COMMA ) {
+      res.push(Identifier(this.curToken.value))
+      this.nextToken()
+      this.nextToken()
+    }
+    if (this.curToken.type !== TOKEN_TYPE.COMMA) {
+      res.push(Identifier(this.curToken.value))
+      this.nextToken()
+    }
+    if (this.curToken.type !== TOKEN_TYPE.COMMA) {
+      this.pushError('方程 缺 )')
+    }
+    this.nextToken()
+    return res
+  }
+  parseBodyAst() {
+    
+  }
+  parseLpAst() {
+    this.nextToken()
+    const exp = this.paserExAst()
+    if (this.curToken.type !== TOKEN_TYPE.RPAREN) {
+      this.pushError('缺 )')
+    }
+    this.nextToken()
+    return exp
   }
 
   pushError(error) {

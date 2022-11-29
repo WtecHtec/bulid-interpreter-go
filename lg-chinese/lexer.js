@@ -6,7 +6,7 @@ module.exports = class NewLexer {
     this.low = 0
     this.fast = 0
     this.ch = ' '
-    this.lexerError = []
+    this.errors = []
    }
 
    readChar() {
@@ -43,7 +43,6 @@ module.exports = class NewLexer {
         break
       case '乘':
           token = NewToken(TOKEN_TYPE.ASTERISK, this.ch);
-        
           break
       case '打':
           const pch = this.ch
@@ -54,12 +53,33 @@ module.exports = class NewLexer {
             this.pushErrors('关键字 打印 缺少')
           }
           break
+      case '方':
+          const fch = this.ch
+          if (this.peekChar() === '程') {
+            this.readChar()
+            token = NewToken(TOKEN_TYPE.FUNCTION, fch + this.ch);
+          } else {
+            this.pushErrors('关键字 方程 缺少')
+          }
+          break
       case ';':
             token = NewToken(TOKEN_TYPE.SEMICOLON, this.ch);
             break 
       case ',':
             token = NewToken(TOKEN_TYPE.COMMA, this.ch);
-            break 
+            break
+      case '(':
+        token = NewToken(TOKEN_TYPE.LPAREN, this.ch)
+        break
+      case ')':
+          token = NewToken(TOKEN_TYPE.RPAREN, this.ch)
+          break
+      case '{' :
+        token = NewToken(TOKEN_TYPE.LBRACE, this.ch)
+        break
+      case '}' :
+          token = NewToken(TOKEN_TYPE.RBRACE, this.ch)
+          break
       default:
         if (this.isLetter()) {
           token = NewToken(TOKEN_TYPE.IDENT, this.readLetter())
@@ -119,6 +139,6 @@ module.exports = class NewLexer {
    }
 
    pushErrors(error) {
-    this.lexerError.push(error)
+    this.errors.push(error)
    }
 }

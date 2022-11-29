@@ -36,6 +36,14 @@ const AST_PRT = (vlues) => {
   }
 }
 
+const AST_FN = (params, body) => {
+  return {
+    params,
+    body,
+    type: 'FUNCTION',
+  }
+}
+
 
 module.exports = {
   Identifier,
@@ -43,4 +51,5 @@ module.exports = {
   AST_LET,
   AST_IN_OPT,
   AST_PRT,
+  AST_FN,
 }
