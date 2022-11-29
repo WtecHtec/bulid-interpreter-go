@@ -2,6 +2,18 @@ const env = {
   store: {},
   path: null
 }
+// 设置函数环境
+function setFnEnv(fn , ps, env) {
+	const fnenv = {
+		path: env,
+		store: {},
+	}
+	const { params } = fn
+	params.forEach((item ,i) => {
+		fnenv.store[item.value] = ps[i] || null
+	})
+	return fnenv;
+}
 
 function getIden(env, val) {
   if (!env) return null
@@ -12,6 +24,7 @@ function getIden(env, val) {
 }
 
 function run(node, env) {
+	if (!node) return null
   const type = node.type
   switch(type) {
     case 'LET': 
@@ -24,7 +37,12 @@ function run(node, env) {
       return  runInfix(node, env)
     case 'PRINT':
       return runPrint(node, env)
-
+		case 'FUNCTION': 
+			return runFuntion(node, env)
+		case 'CALL':
+			 return runCall(node, env)
+		case 'RETURN':
+			 return run(node.value, env)
   }
   return null
 }
@@ -61,12 +79,44 @@ function runIden(node, env) {
   return getIden(env, node.value)
 }
 
-function Eval(node) {
-  // console.log('ast node', node)
-  node.forEach(item => {
-    run(item, env)
-  })
-  // console.log(env)
+function runFuntion(node, env) {
+	node.env = env
+	return node
 }
 
-module.exports = Eval
+function runCall(node, env) {
+
+	const { fn, params } = node
+	const func =  run(fn, env)
+
+	const fnps = []
+	params.forEach(item => {
+		fnps.push(run(item, env))
+	})
+
+	const result = applyFunction(func, fnps, env)
+	return result
+}
+
+function applyFunction(fn, params, env) {
+	const fnenv = setFnEnv(fn, params, env)
+
+	const { body } = fn
+	// console.log('fnenv==', body, fnenv)
+	const result = Eval(body.values, fnenv)
+	return result
+}
+function Eval(node, env) {
+  // console.log(' Eval ast node', node)
+	let res = null
+  node.forEach(item => {
+    res = run(item, env)
+  })
+  // console.log('Eval==', env)
+	return res
+}
+
+module.exports = {
+	env,
+	Eval
+} 

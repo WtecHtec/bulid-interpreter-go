@@ -9,6 +9,7 @@ const TOKEN_TYPE = {
   PRINT: 'PRINT',
   FUNCTION: 'FUNCTION',
   LET: 'LET',
+	RETURN: 'RETURN',
    
   ASSIGN: "=",
   ASTERISK : "*",

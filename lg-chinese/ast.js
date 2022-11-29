@@ -36,14 +36,36 @@ const AST_PRT = (vlues) => {
   }
 }
 
-const AST_FN = (params, body) => {
+const AST_FN = (params, body, env) => {
   return {
+		env,
     params,
     body,
     type: 'FUNCTION',
   }
 }
 
+const AST_BLOCK = (values) => {
+	return {
+		values,
+		type: 'BLOCK',
+	}
+}
+
+const AST_RETURN = (value) => {
+	return {
+		value: value,
+		type: 'RETURN',
+	}
+}
+
+const AST_CALL = (fn, params) => {
+	return {
+		params,
+		fn,
+		type: 'CALL'
+	}
+}
 
 module.exports = {
   Identifier,
@@ -52,4 +74,7 @@ module.exports = {
   AST_IN_OPT,
   AST_PRT,
   AST_FN,
+	AST_BLOCK,
+	AST_RETURN,
+	AST_CALL,
 }

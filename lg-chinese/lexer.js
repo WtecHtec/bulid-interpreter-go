@@ -62,6 +62,15 @@ module.exports = class NewLexer {
             this.pushErrors('关键字 方程 缺少')
           }
           break
+			case '返':
+						const rch = this.ch
+						if (this.peekChar() === '回') {
+							this.readChar()
+							token = NewToken(TOKEN_TYPE.RETURN, rch + this.ch);
+						} else {
+							this.pushErrors('关键字 返回 缺少')
+						}
+						break
       case ';':
             token = NewToken(TOKEN_TYPE.SEMICOLON, this.ch);
             break 
