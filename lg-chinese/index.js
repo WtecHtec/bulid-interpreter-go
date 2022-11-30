@@ -5,12 +5,16 @@ const Paser = require('./paser')
 const code = ` 
  设 x 为  5; 
  y 等于 8 乘 x; 
- 打印 x,y,x 乘 y;
  设 add 为 方程(x, y) {
-  返回 x 乘 y
+  y 等于 8;
+  设 db 为 方程(y) {
+    返回 y 乘 2;
+  };
+  打印 y;
+  返回 x 乘 y;
  };
  res 等于 add(2, y);
- 打印 res,x;`
+ 打印 res,  x 乘 add(2, y);`
 const lexer = new NewLexer(code)
 if (lexer.errors.length) {
   console.log('词法失败==', lexer.errors.join(','))

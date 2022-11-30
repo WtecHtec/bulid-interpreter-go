@@ -11,7 +11,7 @@ class Paser {
       [TOKEN_TYPE.IDENT]: Identifier,
       [TOKEN_TYPE.INT]: NumericLiteral,
       [TOKEN_TYPE.FUNCTION]: this.parseFuncAst.bind(this),
-      // [TOKEN_TYPE.LPAREN]: this.parseLpAst.bind(this),
+      [TOKEN_TYPE.LPAREN]: this.parseLpAst.bind(this),
     }
 
     this.infixParseFns = {
@@ -88,6 +88,7 @@ class Paser {
 		const res = AST_RETURN()
 		this.nextToken()
 		res.value = this.paserExAst()
+    this.nextToken()
 		return res
 	}
   paserExAst() {
@@ -109,7 +110,7 @@ class Paser {
     while(this.curToken.type !== TOKEN_TYPE.SEMICOLON && this.curToken.type !== TOKEN_TYPE.EOF) {
       values.push( this.paserExAst(this.curToken) )
       this.nextToken()
-      if (this.curToken.type === TOKEN_TYPE.COMMA) {
+      if (this.curToken.type === TOKEN_TYPE.COMMA ) {
         this.nextToken()
       }
     }
@@ -132,7 +133,6 @@ class Paser {
       this.pushError('方程 缺 {')
     }
     fnAst.body = this.parseBodyAst()
-		// this.nextToken()
     return fnAst;
   }
 
@@ -164,6 +164,7 @@ class Paser {
 			this.nextToken()
 		}
 		// this.nextToken()
+    // console.log('parseBodyAst===', this.curToken)
 		
 		return AST_BLOCK(res)
 
@@ -175,6 +176,10 @@ class Paser {
 			this.pushError('方程缺失 （')
 		}
 		res.params = this.parseLpAst()
+    if (this.curToken.type !== TOKEN_TYPE.RPAREN) {
+      this.pushError('方程缺失 )')
+    }
+    this.nextToken()
 		return res
 	}
 	// （<ex>, <ex>）
@@ -191,9 +196,10 @@ class Paser {
       res.push(this.paserExAst())
       this.nextToken()
     }
-    if (this.curToken.type !== TOKEN_TYPE.COMMA) {
+    if (this.curToken.type !== TOKEN_TYPE.RPAREN) {
       this.pushError('方程 缺 )')
     }
+    // this.nextToken()
     return res
   }
 
